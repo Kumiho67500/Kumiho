@@ -5,6 +5,7 @@
     <title>Kumiho</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="https://i.ibb.co/CpL1WNRs/logo.png" />
     <style>
       body {
         font-family: 'Open Sans', sans-serif;
@@ -19,15 +20,21 @@
         min-height: 100vh;
       }
 
-      h1 {
-        font-size: 2.5em;
-        margin: 20px 0;
-        color: #ff6600; /* orange vif */
+      .logo {
+        max-width: 100px;
+        margin-top: 10px;
+        margin-bottom: 10px;
       }
 
-      img {
+      h1 {
+        font-size: 2.5em;
+        margin: 10px 0 20px 0;
+        color: #ff6600;
+      }
+
+      img.main-image {
         width: 100%;
-        max-width: 300px; /* plus petite image */
+        max-width: 300px;
         height: auto;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -40,14 +47,14 @@
       }
 
       a {
-        color: #d35400; /* orange doux */
+        color: #d35400;
         text-decoration: none;
         font-weight: bold;
         transition: color 0.3s ease;
       }
 
       a:hover {
-        color: #e67e22; /* orange vif */
+        color: #e67e22;
       }
 
       @media (max-width: 600px) {
@@ -62,8 +69,9 @@
     </style>
   </head>
   <body>
+    <img src="https://i.ibb.co/CpL1WNRs/logo.png" alt="Logo Kumiho" class="logo" />
     <h1>BIENVENUE SUR MON SITE</h1>
-    <img src="https://i.ibb.co/xkmHjFV/kumiho.png" alt="Kumiho logo" />
+    <img src="https://i.ibb.co/xkmHjFV/kumiho.png" alt="Image principale" class="main-image" />
 
     <p>Liens vers mes autres réseaux :</p>
 
