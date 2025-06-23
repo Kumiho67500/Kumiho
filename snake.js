@@ -10,6 +10,8 @@ let nutrientFood = [];
 
 let poop = [];
 let snakePieces = [];
+let detachedSegments = [];        // <-- ajout ici
+let collectibleSegments = [];     // <-- ajout ici
 
 let gameOver = false;
 let isPaused = false;
@@ -107,7 +109,7 @@ function keyPressed() {
   else if (keyCode === LEFT_ARROW && snake_direction !== "right") snake_direction = "left";
   else if (keyCode === RIGHT_ARROW && snake_direction !== "left") snake_direction = "right";
   else if (key === 'r' || key === 'R') resetGame();
-  else if (key === 'p' || key === 'P') isPaused = !isPaused; // <-- Touche pause
+  else if (key === 'p' || key === 'P') isPaused = !isPaused;
 }
 
 function drawGrid() {
@@ -360,7 +362,7 @@ function resetGame() {
   ];
   snake_direction = "up";
   gameOver = false;
-  isPaused = false; // <-- reset pause
+  isPaused = false;
   score = 0;
   food = [];
   nutrientFood = [];
@@ -375,4 +377,7 @@ function resetGame() {
   invincibleFrames = 0;
   blueEffectFrames = 0;
   placeFood();
+}
+
+function advancment() {
 }
