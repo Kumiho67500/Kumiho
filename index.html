@@ -16,6 +16,13 @@
       background: #f8c146;
       padding: 2rem;
       text-align: center;
+      position: relative; /* nécessaire pour positionner le logo en absolu */
+    }
+    .logo {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      height: 80px;
     }
     header h1 {
       font-size: 3rem;
@@ -46,6 +53,7 @@
 </head>
 <body>
   <header>
+    <img src="chicken whisper inc logo.png" alt="Logo Chicken Whisperers" class="logo">
     <h1>Chicken Whisperers Inc.</h1>
     <p>"Vos poules ont des émotions. Et une carte bleue."</p>
   </header>
