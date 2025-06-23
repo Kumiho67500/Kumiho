@@ -12,6 +12,7 @@ let poop = []; // pour morceaux "morts" issus de pommes pourries (disparaissent)
 let snakePieces = []; // morceaux issus des bombes, posés au sol, récupérables
 
 let gameOver = false;
+let isPaused = false; // <-- Ajout pour pause
 let score = 0;
 let superSpeedFrames = 0;
 let invincibleFrames = 0;
@@ -28,8 +29,32 @@ function setup() {
   resetGame();
 }
 
+function advancment() {
+  if (score >= 100) text("Vous avez obtenu un compte Steam", width / 2, height / 2 + 100);
+  else if (score >= 200) text("Vous avez obtenu un compte Discord", width / 2, height / 2 + 100);
+  else if (score >= 300) text("Vous avez obtenu un compte Twitter", width / 2, height / 2 + 100);
+  else if (score >= 400) text("Vous avez obtenu un compte Facebook", width / 2, height / 2 + 100);
+  else if (score >= 500) text("Vous avez obtenu un compte Instagram", width / 2, height / 2 + 100);
+  else if (score >= 600) text("Vous avez obtenu un compte TikTok", width / 2, height / 2 + 100);
+  else if (score >= 700) text("Vous avez obtenu un compte Snapchat", width / 2, height / 2 + 100);
+  else if (score >= 800) text("Vous avez obtenu un compte Reddit", width / 2, height / 2 + 100);
+  else if (score >= 900) text("Vous avez obtenu un compte Pinterest", width / 2, height / 2 + 100);
+  else if (score >= 1000) text("Vous avez obtenu un compte LinkedIn", width / 2, height / 2 + 100);
+}
+
 function draw() {
   background(220);
+
+  if (isPaused) {
+    fill(0);
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    text("Pause", width / 2, height / 2);
+    textSize(16);
+    text("Appuie sur 'P' pour reprendre", width / 2, height / 2 + 30);
+    return;
+  }
+
   drawGrid();
 
   if (gameOver) {
@@ -41,16 +66,6 @@ function draw() {
     text("Appuie sur 'R' pour rejouer", width / 2, height / 2 + 20);
     text("Score : " + score, width / 2, height / 2 + 50);
     return;
-  }
-
-  function advancment() {
-    if (score >= 100) {
-        text("Vous avez obtenu un compte Steam", width / 2, height / 2 + 100);}
-    }
-
-  function pauseGame() {
-    if (keyIsDown("p") || keyIsDown("P")) {
-        frameRate(0);}
   }
 
   drawFood();
@@ -73,9 +88,7 @@ function draw() {
     attractRedFoodTowardsSnake();
   }
 
-  if (invincibleFrames > 0) {
-    attractAllElementsTowardsSnake();
-  }
+  if (invincibleFrames > 0) attractAllElementsTowardsSnake();
 
   fill(0);
   textSize(16);
@@ -101,6 +114,15 @@ function draw() {
   if (random() < 0.05) placeNutrientFood();
 }
 
+function keyPressed() {
+  if (keyCode === UP_ARROW && snake_direction !== "down") snake_direction = "up";
+  else if (keyCode === DOWN_ARROW && snake_direction !== "up") snake_direction = "down";
+  else if (keyCode === LEFT_ARROW && snake_direction !== "right") snake_direction = "left";
+  else if (keyCode === RIGHT_ARROW && snake_direction !== "left") snake_direction = "right";
+  else if (key === 'r' || key === 'R') resetGame();
+  else if (key === 'p' || key === 'P') isPaused = !isPaused; // <-- Touche pause
+}
+
 function drawGrid() {
   stroke(200);
   for (let i = 0; i <= cols; i++) line(i * cellSize, 0, i * cellSize, height);
@@ -114,6 +136,7 @@ function drawFood() {
 
 function drawNutrientFood() {
   fill(0, 255, 0);
+  for (let f of nutrientFood) rect(f[0], f[1], cellSize, cellSize);
 }
 
 function drawRottenFood() {
@@ -176,19 +199,8 @@ function updateSnakePieces() {
       seg.x += seg.dx * cellSize;
       seg.y += seg.dy * cellSize;
       seg.stepsLeft--;
-    } else {
-      // immobile, posés au sol
-      // on ne fait rien ici, ils restent à cette position
     }
   }
-}
-
-function keyPressed() {
-  if (keyCode === UP_ARROW && snake_direction !== "down") snake_direction = "up";
-  else if (keyCode === DOWN_ARROW && snake_direction !== "up") snake_direction = "down";
-  else if (keyCode === LEFT_ARROW && snake_direction !== "right") snake_direction = "left";
-  else if (keyCode === RIGHT_ARROW && snake_direction !== "left") snake_direction = "right";
-  else if (key === 'r' || key === 'R') resetGame();
 }
 
 function move() {
@@ -214,32 +226,29 @@ function move() {
   let collectedIndex = collectibleSegments.findIndex(s => s.x === newHead[0] && s.y === newHead[1]);
   if (collectedIndex !== -1) {
     collectibleSegments.splice(collectedIndex, 1);
-    snake.push([snake[snake.length - 1][0], snake[snake.length - 1][1]]); // agrandir serpent
+    snake.push([snake[snake.length - 1][0], snake[snake.length - 1][1]]);
     score++;
   }
 
   snake.unshift(newHead);
 
-  if (eatFood(newHead, food)) {
-    score++;
-  } else if (eatFood(newHead, blueFood)) {
-    blueEffectFrames = 50;
-  } else if (eatFood(newHead, rottenFood) && !invincibleFrames) {
+  if (eatFood(newHead, food)) score++;
+  else if (eatFood(newHead, blueFood)) blueEffectFrames = 50;
+  else if (eatFood(newHead, rottenFood) && !invincibleFrames) {
     let detached = snake.splice(-5, 5);
     detached.forEach(s => detachedSegments.push({ x: s[0], y: s[1], timer: 50 }));
     if (snake.length === 0) gameOver = true;
-  } else if (eatFood(newHead, yellowFood)) {
-    superSpeedFrames = 50;
-  } else if (eatFood(newHead, flashingFood)) {
-    invincibleFrames = 150;
-  } else if (eatFood(newHead, explosiveFood)) {
+  } else if (eatFood(newHead, yellowFood)) superSpeedFrames = 50;
+  else if (eatFood(newHead, flashingFood)) invincibleFrames = 150;
+  else if (eatFood(newHead, explosiveFood)) {
     explodeSnakePieces(newHead);
     score++;
   } else if (detachedSegments.some(s => s.x === newHead[0] && s.y === newHead[1])) {
     detachedSegments = detachedSegments.filter(s => !(s.x === newHead[0] && s.y === newHead[1]));
     score = max(score - 1, 0);
   } else if (nutrientFood.some(f => f[0] === newHead[0] && f[1] === newHead[1])) {
-    score +=10;
+    nutrientFood = nutrientFood.filter(f => !(f[0] === newHead[0] && f[1] === newHead[1]));
+    score += 10;
   } else {
     snake.pop();
   }
@@ -254,9 +263,7 @@ function explodeSnakePieces(bombPos) {
   for (let i = 1; i < snake.length; i++) {
     let seg = snake[i];
     let dist = distSq(centerX, centerY, seg[0], seg[1]);
-    if (dist <= radius * radius) {
-      toExplode.push(seg);
-    }
+    if (dist <= radius * radius) toExplode.push(seg);
   }
 
   snake = snake.filter(s => !toExplode.includes(s));
@@ -268,13 +275,7 @@ function explodeSnakePieces(bombPos) {
     if (dx !== 0 && dy !== 0) {
       if (random() < 0.5) dx = 0; else dy = 0;
     }
-    collectibleSegments.push({
-      x: seg[0],
-      y: seg[1],
-      dx: dx,
-      dy: dy,
-      stepsLeft: 20
-    });
+    collectibleSegments.push({ x: seg[0], y: seg[1], dx, dy, stepsLeft: 20 });
   });
 }
 
@@ -372,6 +373,7 @@ function resetGame() {
   ];
   snake_direction = "up";
   gameOver = false;
+  isPaused = false; // <-- reset pause
   score = 0;
   food = [];
   nutrientFood = [];
