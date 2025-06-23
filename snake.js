@@ -8,11 +8,11 @@ let blueFood = [];
 let explosiveFood = [];
 let nutrientFood = [];
 
-let poop = []; // pour morceaux "morts" issus de pommes pourries (disparaissent)
-let snakePieces = []; // morceaux issus des bombes, posés au sol, récupérables
+let poop = [];
+let snakePieces = [];
 
 let gameOver = false;
-let isPaused = false; // <-- Ajout pour pause
+let isPaused = false;
 let score = 0;
 let superSpeedFrames = 0;
 let invincibleFrames = 0;
@@ -27,19 +27,6 @@ function setup() {
   rows = height / cellSize;
   frameRate(10);
   resetGame();
-}
-
-function advancment() {
-  if (score >= 100) text("Vous avez obtenu un compte Steam", width / 2, height / 2 + 100);
-  else if (score >= 200) text("Vous avez obtenu un compte Discord", width / 2, height / 2 + 100);
-  else if (score >= 300) text("Vous avez obtenu un compte Twitter", width / 2, height / 2 + 100);
-  else if (score >= 400) text("Vous avez obtenu un compte Facebook", width / 2, height / 2 + 100);
-  else if (score >= 500) text("Vous avez obtenu un compte Instagram", width / 2, height / 2 + 100);
-  else if (score >= 600) text("Vous avez obtenu un compte TikTok", width / 2, height / 2 + 100);
-  else if (score >= 700) text("Vous avez obtenu un compte Snapchat", width / 2, height / 2 + 100);
-  else if (score >= 800) text("Vous avez obtenu un compte Reddit", width / 2, height / 2 + 100);
-  else if (score >= 900) text("Vous avez obtenu un compte Pinterest", width / 2, height / 2 + 100);
-  else if (score >= 1000) text("Vous avez obtenu un compte LinkedIn", width / 2, height / 2 + 100);
 }
 
 function draw() {
