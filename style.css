@@ -10,7 +10,7 @@ header {
   background: #f8c146;
   padding: 2rem;
   text-align: center;
-  position: relative;
+  position: relative; /* nécessaire pour positionner le logo en absolu */
 }
 
 .logo {
